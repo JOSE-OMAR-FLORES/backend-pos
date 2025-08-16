@@ -12,14 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('order_items', function (Blueprint $table) {
-            // Renombrar 'price' a 'price_at_order' si ya existe
-            // $table->renameColumn('price', 'price_at_order'); // Requiere doctrine/dbal
-
-            // Si 'price_at_order' no existe, añadirla
-            $table->decimal('price_at_order', 10, 2)->after('quantity')->default(0);
-
-            // Si quieres guardar modificaciones como JSON
-            // $table->json('modifications')->nullable()->after('price_at_order');
+            // La columna 'price_at_order' ya existe, no la agregamos de nuevo para evitar error.
+            // $table->decimal('price_at_order', 10, 2)->after('quantity')->default(0);
         });
     }
 
