@@ -78,11 +78,15 @@ class OrderController extends Controller
 
         foreach ($request->items as $item) {
             $product = Product::findOrFail($item['product_id']);
+            
+            // Intentar usar price_at_order del request, si no existe usar product price
+            $price = isset($item['price_at_order']) ? $item['price_at_order'] : $product->price;
+            
             OrderItem::create([
                 'order_id' => $order->id,
                 'product_id' => $product->id,
                 'quantity' => $item['quantity'],
-                'price_at_order' => $item['price_at_order'],
+                'price_at_order' => $price,
             ]);
         }
 
