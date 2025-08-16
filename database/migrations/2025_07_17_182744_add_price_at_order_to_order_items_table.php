@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('order_items', function (Blueprint $table) {
-            // La columna 'price_at_order' ya existe, no la agregamos de nuevo para evitar error.
-            // $table->decimal('price_at_order', 10, 2)->after('quantity')->default(0);
+            // Verificamos si la columna no existe antes de agregarla
+            if (!Schema::hasColumn('order_items', 'price_at_order')) {
+                $table->decimal('price_at_order', 10, 2)->after('quantity')->default(0);
+            }
         });
     }
 

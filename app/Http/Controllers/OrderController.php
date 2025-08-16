@@ -59,6 +59,7 @@ class OrderController extends Controller
             'items' => 'required|array',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
+            'items.*.price_at_order' => 'required|numeric|min:0',
             'total_amount' => 'required|numeric|min:0',
             'payment_method' => 'required|string|max:50',
         ]);
@@ -81,7 +82,7 @@ class OrderController extends Controller
                 'order_id' => $order->id,
                 'product_id' => $product->id,
                 'quantity' => $item['quantity'],
-                'price_at_order' => $product->price,
+                'price_at_order' => $item['price_at_order'],
             ]);
         }
 
