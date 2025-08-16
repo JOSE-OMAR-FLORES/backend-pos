@@ -1,0 +1,8 @@
+name: backend-pos
+services:
+  - name: web
+    run_command: heroku-php-apache2 public/
+    environment_slug: php
+    github:
+      branch: master
+      deploy_on_push: true
