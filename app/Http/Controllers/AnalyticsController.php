@@ -20,7 +20,7 @@ class AnalyticsController extends Controller
         $tiempoPromedio = Order::whereNotNull('estimated_time')->avg('estimated_time');
 
         // 📊 Ventas semanales (gráfico de barras)
-        $ventasSemanales = Order::selectRaw('DAYNAME(created_at) as dia, SUM(total_amount) as total')
+    $ventasSemanales = Order::selectRaw("TO_CHAR(created_at, 'Day') as dia, SUM(total_amount) as total")
             ->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])
             ->groupBy('dia')
             ->get();
