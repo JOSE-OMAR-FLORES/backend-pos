@@ -12,7 +12,7 @@ class Order extends Model
     // Asegúrate de que estos campos existan en tu migración de la tabla 'orders'
     protected $fillable = [
         'status',
-        'total_amount', // Nombre de columna para el total
+        'total', // Nombre de columna para el total
         'payment_method', // Nueva columna
         'customer_name', // Nueva columna (opcional)
         'notes', // Nueva columna (opcional)
