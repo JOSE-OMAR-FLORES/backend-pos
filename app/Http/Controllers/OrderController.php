@@ -76,7 +76,7 @@ class OrderController extends Controller
 
         $order = Order::create([
             'status' => 'pending',
-            'total_amount' => $total,
+            'total' => $total,
             'payment_method' => $request->payment_method,
             'customer_name' => $request->customer_name ?? null,
             'notes' => $request->notes ?? null,
