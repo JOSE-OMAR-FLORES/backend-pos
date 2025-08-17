@@ -59,24 +59,15 @@ class OrderController extends Controller
             'items' => 'required|array',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
-            'items.*.price_at_order' => 'nullable|numeric|min:0',
+            'total_amount' => 'required|numeric|min:0',
             'payment_method' => 'required|string|max:50',
         ]);
 
         DB::beginTransaction();
 
-        // Calcular el total sumando los subtotales de cada item
-        $total = 0;
-        foreach ($request->items as $item) {
-            $product = Product::findOrFail($item['product_id']);
-            $price = isset($item['price_at_order']) ? $item['price_at_order'] : $product->price;
-            $subtotal = $price * $item['quantity'];
-            $total += $subtotal;
-        }
-
         $order = Order::create([
             'status' => 'pending',
-            'total' => $total,
+            'total_amount' => $request->total_amount,
             'payment_method' => $request->payment_method,
             'customer_name' => $request->customer_name ?? null,
             'notes' => $request->notes ?? null,
@@ -86,12 +77,11 @@ class OrderController extends Controller
 
         foreach ($request->items as $item) {
             $product = Product::findOrFail($item['product_id']);
-            $price = isset($item['price_at_order']) ? $item['price_at_order'] : $product->price;
             OrderItem::create([
                 'order_id' => $order->id,
                 'product_id' => $product->id,
                 'quantity' => $item['quantity'],
-                'price_at_order' => $price,
+                'price_at_order' => $product->price,
             ]);
         }
 
